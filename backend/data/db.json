@@ -1,0 +1,135 @@
+{
+  "users": [
+    {
+      "id": "CijKCDBfLg",
+      "name": "cacav",
+      "username": "cacav",
+      "email": "asd@gmail.com",
+      "ageGroup": "18–24",
+      "avatar": "🌿",
+      "createdAt": "2026-08-18T04:49:09.585Z"
+    },
+    {
+      "id": "l2ks7PTWtN",
+      "name": "asfdfafaf",
+      "username": "afa",
+      "email": "adad@gmail.comm",
+      "ageGroup": "18–24",
+      "avatar": "🌻",
+      "createdAt": "2026-08-18T05:59:41.180Z"
+    },
+    {
+      "id": "0GktXxpAFN",
+      "name": "ajfhif",
+      "username": "asfsgasfafr",
+      "email": "SDFAFS@gmail.com",
+      "ageGroup": "18–24",
+      "avatar": "🌱",
+      "createdAt": "2026-08-18T06:37:17.987Z"
+    },
+    {
+      "id": "pWs10hYHmt",
+      "name": "asdad",
+      "username": "adad",
+      "email": "asdd@gmail.com",
+      "ageGroup": "18–24",
+      "avatar": "🌿",
+      "createdAt": "2026-08-18T07:27:37.305Z"
+    },
+    {
+      "id": "P1CyFSCATc",
+      "name": "arjun",
+      "username": "arjun",
+      "email": "adefn@gmail.com",
+      "ageGroup": "18–24",
+      "avatar": "🐢",
+      "createdAt": "2026-08-18T10:55:01.437Z"
+    }
+  ],
+  "scores": [
+    {
+      "userId": "CijKCDBfLg",
+      "username": "cacav",
+      "avatar": "🌿",
+      "score": 630,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 2,
+      "_id": "1787028626460-al5jhouf4s7",
+      "playedAt": "2026-08-18T04:50:26.460Z"
+    },
+    {
+      "userId": "CijKCDBfLg",
+      "username": "cacav",
+      "avatar": "🌿",
+      "score": 674,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 2,
+      "_id": "1787029337023-me1xvbhsn5p",
+      "playedAt": "2026-08-18T05:02:17.024Z"
+    },
+    {
+      "userId": "8EarKm1jeF",
+      "username": "arjun",
+      "avatar": "🌿",
+      "score": 556,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 2,
+      "_id": "1787034442684-on5iaa7lr3q",
+      "playedAt": "2026-08-18T06:27:22.684Z"
+    },
+    {
+      "userId": "0GktXxpAFN",
+      "username": "asfsgasfafr",
+      "avatar": "🌱",
+      "score": 942,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 1,
+      "_id": "1787047518578-wkmu4sb6rj",
+      "playedAt": "2026-08-18T10:05:18.578Z"
+    },
+    {
+      "userId": "0GktXxpAFN",
+      "username": "asfsgasfafr",
+      "avatar": "🌱",
+      "score": 942,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 1,
+      "_id": "1787047518634-9kk02knvh9",
+      "playedAt": "2026-08-18T10:05:18.634Z"
+    },
+    {
+      "userId": "0GktXxpAFN",
+      "username": "asfsgasfafr",
+      "avatar": "🌱",
+      "score": 808,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 1,
+      "_id": "1787047997945-57ju97rozi",
+      "playedAt": "2026-08-18T10:13:17.945Z"
+    },
+    {
+      "userId": "P1CyFSCATc",
+      "username": "arjun",
+      "avatar": "🐢",
+      "score": 980,
+      "correct": 5,
+      "total": 5,
+      "accuracy": 100,
+      "bestCombo": 2,
+      "_id": "1787050577881-uerd7ebk1a",
+      "playedAt": "2026-08-18T10:56:17.881Z"
+    }
+  ]
+}
