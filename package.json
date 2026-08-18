@@ -1,0 +1,11 @@
+{
+  "name": "ecovision-project",
+  "version": "2.0.0",
+  "description": "EcoVision - Real-Time Kahoot-Style Multiplayer Puzzle Game Focused on Plastic-Free Living & Sustainability",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev"
+  }
+}
