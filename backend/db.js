@@ -1,111 +1,15 @@
-import mongoose from "mongoose";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-import User from "./models/User.js";
-import Score from "./models/Score.js";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DB_FILE = path.join(__dirname, "data", "db.json");
-
-let usingMongo = false;
-
-function readFileDB() {
-  if (!fs.existsSync(DB_FILE)) {
-    fs.writeFileSync(DB_FILE, JSON.stringify({ users: [], scores: [] }, null, 2));
-  }
-  return JSON.parse(fs.readFileSync(DB_FILE, "utf-8"));
-}
-
-function writeFileDB(data) {
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
-}
-
-export async function connectDB() {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) {
-    console.log("ℹ️  No MONGODB_URI set — using local JSON file storage (backend/data/db.json).");
-    readFileDB();
-    return;
-  }
-  try {
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 4000 });
-    usingMongo = true;
-    console.log("✅ Connected to MongoDB — using MongoDB for storage.");
-  } catch (err) {
-    console.log("⚠️  Could not connect to MongoDB, falling back to local JSON file storage.");
-    console.log("    Reason:", err.message);
-    usingMongo = false;
-    readFileDB();
-  }
-}
-
-export const store = {
-  async createUser({ id, name, username, email, ageGroup, avatar }) {
-    if (usingMongo) {
-      const existing = await User.findOne({ username });
-      if (existing) return existing.toObject();
-      const user = await User.create({ id, name, username, email, ageGroup, avatar });
-      return user.toObject();
-    }
-    const data = readFileDB();
-    const existing = data.users.find((u) => u.username === username);
-    if (existing) return existing;
-    const user = { id, name, username, email, ageGroup, avatar, createdAt: new Date().toISOString() };
-    data.users.push(user);
-    writeFileDB(data);
-    return user;
-  },
-
-  async getUserById(id) {
-    if (usingMongo) {
-      const user = await User.findOne({ id });
-      return user ? user.toObject() : null;
-    }
-    const data = readFileDB();
-    return data.users.find((u) => u.id === id) || null;
-  },
-
-  async getUserByUsername(username) {
-    if (usingMongo) {
-      const user = await User.findOne({ username });
-      return user ? user.toObject() : null;
-    }
-    const data = readFileDB();
-    return data.users.find((u) => u.username === username) || null;
-  },
-
-  async saveScore(scoreData) {
-    if (usingMongo) {
-      const score = await Score.create(scoreData);
-      return score.toObject();
-    }
-    const data = readFileDB();
-    const score = { ...scoreData, _id: `${Date.now()}-${Math.random().toString(36).slice(2)}`, playedAt: new Date().toISOString() };
-    data.scores.push(score);
-    writeFileDB(data);
-    return score;
-  },
-
-  // Returns best score per user, sorted descending
-  async getLeaderboard(limit = 50) {
-    if (usingMongo) {
-      const scores = await Score.find().sort({ score: -1 }).lean();
-      return dedupeBest(scores).slice(0, limit);
-    }
-    const data = readFileDB();
-    const sorted = [...data.scores].sort((a, b) => b.score - a.score);
-    return dedupeBest(sorted).slice(0, limit);
-  },
-};
-
-function dedupeBest(scores) {
-  const seen = new Map();
-  for (const s of scores) {
-    const key = s.userId;
-    if (!seen.has(key) || seen.get(key).score < s.score) {
-      seen.set(key, s);
-    }
-  }
-  return Array.from(seen.values()).sort((a, b) => b.score - a.score);
-}
+import mongoose from "mongoose"; import fs from "fs"; import path from "path"; import { fileURLToPath } from "url"; import User from "./models/User.js"; import Score from "./models/Score.js"; const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DB_FILE = path.join(__dirname, "data", "db.json"); let usingMongo = false; function readFileDB() { // Create the data folder if it does not exist const dataDir = path.dirname(DB_FILE); if (!fs.existsSync(dataDir)) { fs.mkdirSync(dataDir, { recursive:
+true }); } // Create db.json if it does not exist if (!fs.existsSync(DB_FILE)) { fs.writeFileSync( DB_FILE, JSON.stringify({ users: [], scores: [] }, null, 2) ); } return JSON.parse(fs.readFileSync(DB_FILE, "utf-8")); } function writeFileDB(data) { const
+dataDir = path.dirname(DB_FILE); // Make sure the data folder exists if (!fs.existsSync(dataDir)) { fs.mkdirSync(dataDir, { recursive: true }); } fs.writeFileSync( DB_FILE, JSON.stringify(data, null, 2) ); } export async function connectDB() { const uri
+= process.env.MONGODB_URI; if (!uri) { console.log( "ℹ️ No MONGODB_URI set — using local JSON file storage (backend/data/db.json)." ); readFileDB(); return; } try { await mongoose.connect(uri, { serverSelectionTimeoutMS: 4000, }); usingMongo = true; console.log(
+"✅ Connected to MongoDB — using MongoDB for storage." ); } catch (err) { console.log( "⚠️ Could not connect to MongoDB, falling back to local JSON file storage." ); console.log("Reason:", err.message); usingMongo = false; readFileDB(); } } export const
+store = { async createUser({ id, name, username, email, ageGroup, avatar, }) { if (usingMongo) { const existing = await User.findOne({ username }); if (existing) { return existing.toObject(); } const user = await User.create({ id, name, username, email,
+ageGroup, avatar, }); return user.toObject(); } const data = readFileDB(); const existing = data.users.find( (u) => u.username === username ); if (existing) { return existing; } const user = { id, name, username, email, ageGroup, avatar, createdAt: new
+Date().toISOString(), }; data.users.push(user); writeFileDB(data); return user; }, async getUserById(id) { if (usingMongo) { const user = await User.findOne({ id }); return user ? user.toObject() : null; } const data = readFileDB(); return ( data.users.find((u)
+=> u.id === id) || null ); }, async getUserByUsername(username) { if (usingMongo) { const user = await User.findOne({ username }); return user ? user.toObject() : null; } const data = readFileDB(); return ( data.users.find( (u) => u.username === username
+) || null ); }, async saveScore(scoreData) { if (usingMongo) { const score = await Score.create(scoreData); return score.toObject(); } const data = readFileDB(); const score = { ...scoreData, _id: `${Date.now()}-${Math.random() .toString(36) .slice(2)}`,
+playedAt: new Date().toISOString(), }; data.scores.push(score); writeFileDB(data); return score; }, // Returns best score per user, sorted descending async getLeaderboard(limit = 50) { if (usingMongo) { const scores = await Score.find() .sort({ score:
+-1 }) .lean(); return dedupeBest(scores).slice(0, limit); } const data = readFileDB(); const sorted = [...data.scores].sort( (a, b) => b.score - a.score ); return dedupeBest(sorted).slice(0, limit); }, }; function dedupeBest(scores) { const seen = new
+Map(); for (const s of scores) { const key = s.userId; if ( !seen.has(key) || seen.get(key).score
+< s.score ) { seen.set(key, s); } } return Array.from(seen.values()).sort( (a, b)=> b.score - a.score ); }
